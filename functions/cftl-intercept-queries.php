@@ -91,7 +91,7 @@ function cftl_intercept_get_posts(&$query_obj) {
 
 		$page_template = get_post_meta($landing->ID, '_wp_page_template', true);
 		if (!empty($page_template)) {
-			add_filter('template_include', 'cftl_intercept_template_loader');
+			// add_filter('template_include', 'cftl_intercept_template_loader');
 		}
 	}
 }
@@ -168,7 +168,8 @@ function cftl_get_page_template($template, $default_template = null) {
 
 function cftl_intercept_template_loader($template) {
 	global $post;
-	if (isset($post) && is_object($post) && 'cftl-tax-landing' == $post->post_type) {
+	die('nooooo');
+	if (isset($post) && is_object($post) && 'cftl_tax_landing' == $post->post_type) {
 		$post_template = get_post_meta($post->ID, '_wp_page_template', true);
 		if (empty($post_template)) {
 			return $template;
@@ -181,5 +182,5 @@ function cftl_intercept_template_loader($template) {
 	return $template;
 }
 
-add_filter('template_include', 'cftl_intercept_template_loader');
+// add_filter('template_include', 'cftl_intercept_template_loader');
 
