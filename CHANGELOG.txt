@@ -1,5 +1,10 @@
 # Taxonomy Landing changelog
 
+## 1.1.2 (pagelines fork)
+
+- Changes post type to use underscores instead of hyphens
+- Stops template intercept filters from running, as PageLines handles those
+
 ## 1.1.2
 
 - Support revisions on Taxonomy Landing Pages
