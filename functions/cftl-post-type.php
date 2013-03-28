@@ -22,11 +22,11 @@ if (__FILE__ == $_SERVER['SCRIPT_FILENAME']) { die(); }
  * Registers the taxonomy-landing custom post type
  */
 function cftl_register_taxonomy_landing() {
-	register_post_type('cftl-tax-landing', array(
+	register_post_type('cftl_tax_landing', array(
 		'labels' => array(
 			'name' => __('Landing Pages', 'cf-tax-landing'),
 			'singular_name' => __('Landing Page', 'cf-tax-landing'),
-			'add_new' => _x('Add New', 'cftl-tax-landing', 'cf-tax-landing'),
+			'add_new' => _x('Add New', 'cftl_tax_landing', 'cf-tax-landing'),
 			'add_new_item' => __('Add New Landing Page', 'cf-tax-landing'),
 			'edit_item' => __('Edit Landing Page', 'cf-tax-landing'),
 			'new_item' => __('New Landing Page', 'cf-tax-landing'),
@@ -45,12 +45,12 @@ function cftl_register_taxonomy_landing() {
 			'thumbnail',
 			'revisions',
 		),
-		'public' => false,
-		'exclude_from_search' => true,
-		'show_in_nav_menus' => false,
-		'show_ui' => true,
-		'show_in_menu' => true,
-		'hierarchical' => true,
+		'public' => true,
+		// 'exclude_from_search' => true,
+		// 'show_in_nav_menus' => false,
+		// 'show_ui' => true,
+		// 'show_in_menu' => true,
+		// 'hierarchical' => true,
 	));
 }
 
@@ -61,7 +61,7 @@ add_action('init', 'cftl_register_taxonomy_landing');
  */
 function cfct_get_sample_permalink_html($return, $id, $new_title, $new_slug) {
 	$post = get_post($id);
-	if (!empty($post) && $post->post_type == 'cftl-tax-landing') {
+	if (!empty($post) && $post->post_type == 'cftl_tax_landing') {
 		return '';
 	}
 	return $return;
@@ -75,7 +75,7 @@ add_filter('get_sample_permalink_html', 'cfct_get_sample_permalink_html', 10, 4)
 function cftl_remove_submenu_items() {
 	global $wp_taxonomies;
 	foreach ($wp_taxonomies as $tax) {
-		remove_submenu_page('edit.php?post_type=cftl-tax-landing', 'edit-tags.php?taxonomy=' . $tax->name . '&amp;post_type=cftl-tax-landing');
+		remove_submenu_page('edit.php?post_type=cftl_tax_landing', 'edit-tags.php?taxonomy=' . $tax->name . '&amp;post_type=cftl_tax_landing');
 	}
 }
 
@@ -84,14 +84,14 @@ add_action('admin_menu', 'cftl_remove_submenu_items');
 function cftl_register_taxonomies_to_tax_landing() {
 	global $wp_taxonomies;
 	foreach ($wp_taxonomies as $taxonomy) {
-		register_taxonomy_for_object_type($taxonomy->name, 'cftl-tax-landing');
+		register_taxonomy_for_object_type($taxonomy->name, 'cftl_tax_landing');
 	}
 }
 
 add_action('init', 'cftl_register_taxonomies_to_tax_landing', 99999);
 
 function cftl_register_taxonomy_landing_filter($types) {
-	$types = array_merge($types, array('post', 'cftl-tax-landing'));
+	$types = array_merge($types, array('post', 'cftl_tax_landing'));
 	return $types;
 }
 
@@ -102,7 +102,7 @@ function cftl_set_tax_landing_title_admin($title) {
 	if (!$post) {
 		return $title;
 	}
-	if ($post->post_type != 'cftl-tax-landing' || !is_admin()) {
+	if ($post->post_type != 'cftl_tax_landing' || !is_admin()) {
 		return $title;
 	}
 	$title_array = array();
@@ -120,7 +120,7 @@ function cftl_set_tax_landing_title($title) {
 	if (!$post) {
 		return $title;
 	}
-	if ($post->post_type != 'cftl-tax-landing') {
+	if ($post->post_type != 'cftl_tax_landing') {
 		return $title;
 	}
 
@@ -150,7 +150,7 @@ function cftl_tax_landing_messages($messages) {
 		$taxonomy_links = __("No taxonomies specified.", 'cf-tax-landing');
 	}
 
-	$messages['cftl-tax-landing'] = array(
+	$messages['cftl_tax_landing'] = array(
 		0 => '', // Unused. Messages start at index 1.
 		1 => sprintf(__('Landing Page updated.  %s', 'cf-tax-landing'), $taxonomy_links),
 		2 => __('Custom field updated.'),
@@ -175,7 +175,7 @@ add_filter('post_updated_messages', 'cftl_tax_landing_messages');
 
 function cftl_tax_landing_help($contextual_help, $screen_id, $screen) {
 	// $contextual_help .= var_dump($screen); // use this to help determine $screen->id
-	if ('cftl-tax-landing' == $screen->id) {
+	if ('cftl_tax_landing' == $screen->id) {
 	$contextual_help =
 		'<p>' . __('When adding or editing a Landing Page:', 'cf-tax-landing') . '</p>' .
 		'<ul>' .
@@ -183,7 +183,7 @@ function cftl_tax_landing_help($contextual_help, $screen_id, $screen) {
 		'<li>' . __('When a taxonomy archive is requested, such as a category page, the first Landing Page with that taxonomy (if any) is used.') . '</li>' .
 		'</ul>';
 	}
-	elseif ('edit-cftl-tax-landing' == $screen->id) {
+	elseif ('edit-cftl_tax_landing' == $screen->id) {
 		$contextual_help = '<p>' . __('Landing Pages are used to override the default category, tag, and custom Landing Pages with a Build-layout page.', 'cf-tax-landing') . '</p>';
 	}
 	return $contextual_help;
@@ -196,7 +196,7 @@ function cftl_tax_landing_add_extras_box() {
 			'cftl_tax_landing_extras',
 			__('Landing Page Details', 'cf-tax-landing'),
 			'cftl_tax_landing_extras_box',
-			'cftl-tax-landing',
+			'cftl_tax_landing',
 			'side',
 			'high'
 		);
@@ -239,7 +239,7 @@ function cftl_tax_landing_save_extras($post_id) {
 		return;
 	}
 
-	if (!isset($_POST['post_type']) || $_POST['post_type'] != 'cftl-tax-landing') {
+	if (!isset($_POST['post_type']) || $_POST['post_type'] != 'cftl_tax_landing') {
 		return;
 	}
 
@@ -266,7 +266,7 @@ function cftl_tax_landing_save_extras($post_id) {
 add_action('save_post', 'cftl_tax_landing_save_extras');
 
 function cftl_post_type_link($post_link, $post) {
-	if ($post->post_type != "cftl-tax-landing") {
+	if ($post->post_type != "cftl_tax_landing") {
 		return $post_link;
 	}
 	$tax = get_object_taxonomies($post, 'object');
