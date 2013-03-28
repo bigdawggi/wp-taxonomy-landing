@@ -45,12 +45,12 @@ function cftl_register_taxonomy_landing() {
 			'thumbnail',
 			'revisions',
 		),
-		'public' => false,
-		'exclude_from_search' => true,
-		'show_in_nav_menus' => false,
-		'show_ui' => true,
-		'show_in_menu' => true,
-		'hierarchical' => true,
+		'public' => true,
+		// 'exclude_from_search' => true,
+		// 'show_in_nav_menus' => false,
+		// 'show_ui' => true,
+		// 'show_in_menu' => true,
+		// 'hierarchical' => true,
 	));
 }
 
